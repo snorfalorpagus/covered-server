@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, request, abort, current_app
+from flask import Blueprint, request, abort, current_app, render_template
 from werkzeug.utils import secure_filename
 from uuid import uuid4, UUID
 import json
@@ -49,15 +49,8 @@ def upload():
 @blueprint.route("/view/<string:uuid>/")
 def index(uuid):
     uuid = uuid.replace("-", "")
-    print("index", uuid)
     data = load(uuid)
-    # TODO: template
-    # TODO: coverage statistics (count, percentage)
-    output = ""
-    for source_file in data["source_files"]:
-        filename = source_file["name"]
-        output += f"<p><a href=\"{filename}\">{filename}</a></p>"
-    return output
+    return render_template("view_index.j2", source_files=data["source_files"])
 
 
 @blueprint.route("/view/<string:uuid>/<path:filename>")

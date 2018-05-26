@@ -1,0 +1,24 @@
+<table>
+
+<thead>
+<tr>
+<th>File</th>
+<th>Total</th>
+<th>Hit</th>
+<th>Missed</th>
+<th>Coverage</th>
+</thead>
+<tbody>
+
+{% for source_file in source_files %}
+<tr>
+<td><a href="{{ source_file["name"] }}">{{ source_file["name"]}}</a></td>
+<td>{{ source_file["summary"]["total"] }}</td>
+<td>{{ source_file["summary"]["hit"] }}</td>
+<td>{{ source_file["summary"]["missing"] }}</td>
+<td>{{ "%.0f"|format(source_file["summary"]["coverage"]) }} %</td>
+</tr>
+{% endfor %}
+
+</tbody>
+</table>

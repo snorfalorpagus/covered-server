@@ -11,7 +11,7 @@ blueprint = Blueprint("covered", __name__)
 def load(uuid):
     if not isinstance(uuid, UUID):  # TODO: not this
         uuid = UUID(uuid)
-    path = f"/tmp/covered/{uuid.hex}.json" # TODO
+    path = os.path.join(current_app.config["UPLOAD_FOLDER"], f"{uuid.hex}.json")
     print(path)
     with open(path, "r") as f:
         data = json.load(f)
@@ -35,11 +35,8 @@ def upload():
     if "file" not in request.files:
         abort()
     file = request.files["file"]
-    print("ok", file.filename)
     if allowed_file(file.filename):
-        print("OK")
-        # filename = secure_filename(file.filename)
-        filename = f"/tmp/covered/{uuid.hex}.json"  # TODO: store in database
+        filename = f"{uuid.hex}.json"  # TODO: store in database
         file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
     # return url to view to the user
     url = f"{request.url_root}view/{uuid}/"

@@ -38,48 +38,8 @@ class Formatter(HtmlFormatter):
         for t, piece in source:
             outfile.write(piece)
 
-style = """
-<style>
-h1 {
-    font-family: sans-serif;
-    font-size: 18px;
-}
-.code tr {
-}
-.code td {
-    padding: 4px;
-    border: none;
-    font-size: 12px;
-}
-.code {
-    border-spacing: 0;
-    border-collapse: separate;
-    min-width: 700px;
-}
-.code pre {
-    margin: 0;
-    padding: 0;
-}
-.hit {
-    background-color: rgba(208,233,153,0.5);
-}
-.miss {
-    background-color: rgba(216,134,123,0.5);
-}
-.never {
-    background-color: #fff;
-}
-</style>
-"""
 
-def run(filename, code, coverage):
+def create_coverage_table(filename, code, coverage):
     formatter = Formatter(coverage)
     highlighted = highlight(code, PythonLexer(), formatter)
-    output = ""
-    output += style
-    output += "<style>"
-    output += formatter.get_style_defs()
-    output += "</style>"
-    output += f"<h1>{filename}</h1>"
-    output += highlighted
-    return output
+    return highlighted

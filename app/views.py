@@ -3,7 +3,7 @@ from flask import Blueprint, request, abort, current_app, render_template
 from werkzeug.utils import secure_filename
 from uuid import uuid4, UUID
 import json
-from .formatter import run
+from .formatter import create_coverage_table
 
 blueprint = Blueprint("covered", __name__)
 
@@ -63,6 +63,6 @@ def view(uuid, filename):
     code = source_file["source"]
     coverage = source_file["coverage"]
 
-    output = run(filename, code, coverage)
+    coverage_table = create_coverage_table(filename, code, coverage)
     
-    return output
+    return render_template("coverage.j2", path=filename, coverage_table=coverage_table)

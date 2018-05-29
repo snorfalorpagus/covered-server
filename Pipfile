@@ -9,6 +9,7 @@ gunicorn = "*"
 requests = "*"
 coverage = "*"
 pygments = "*"
+flask-env = "*"
 
 [dev-packages]
 

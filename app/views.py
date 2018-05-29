@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, request, abort, current_app, render_template
+from flask import Blueprint, request, abort, current_app, render_template, jsonify
 from werkzeug.utils import secure_filename
 from uuid import uuid4, UUID
 import json
@@ -64,5 +64,11 @@ def view(uuid, filename):
     coverage = source_file["coverage"]
 
     coverage_table = create_coverage_table(filename, code, coverage)
-    
+
     return render_template("coverage.j2", path=filename, coverage_table=coverage_table)
+
+
+@blueprint.route("/healthcheck")
+def healthcheck():
+    # TODO: test database connection
+    return jsonify({"status": "OK"}), 200

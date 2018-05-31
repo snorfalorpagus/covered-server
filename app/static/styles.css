@@ -27,3 +27,6 @@ h1 {
 .never {
     background-color: #fff;
 }
+.coverage_row_total {
+    font-weight: bold;
+}

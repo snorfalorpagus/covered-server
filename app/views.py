@@ -47,7 +47,13 @@ def upload():
 def index(uuid):
     uuid = uuid.replace("-", "")
     data = load(uuid)
-    return render_template("view_index.j2", source_files=data["source_files"])
+    content = render_template(
+        "view_index.j2",
+        source_files=data["source_files"],
+        summary=data["summary"],
+        git=data["git"],
+    )
+    return content
 
 
 @blueprint.route("/view/<string:uuid>/<path:filename>")
@@ -65,7 +71,7 @@ def view(uuid, filename):
 
     coverage_table = create_coverage_table(filename, code, coverage)
 
-    return render_template("coverage.j2", path=filename, coverage_table=coverage_table)
+    return render_template("coverage.j2", path=filename, coverage_table=coverage_table, summary=source_file["summary"])
 
 
 @blueprint.route("/healthcheck")

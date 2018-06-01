@@ -1,0 +1,12 @@
+pipeline:
+  build:
+    image: python:stretch
+    commands:
+      - cp -R . ~
+      - cd ~
+      - bash clean.sh
+      - pip install pipenv
+      - pipenv install --dev --system
+      - export PYTHONPATH=.
+      - pytest tests -v --cov=app --cov=tests
+      - flake8 covered_server

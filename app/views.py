@@ -12,7 +12,6 @@ def load(uuid):
     if not isinstance(uuid, UUID):  # TODO: not this
         uuid = UUID(uuid)
     path = os.path.join(current_app.config["UPLOAD_FOLDER"], f"{uuid.hex}.json")
-    print(path)
     with open(path, "r") as f:
         data = json.load(f)
     return data
@@ -33,7 +32,7 @@ def upload():
     uuid = uuid4()
     # store the data
     if "file" not in request.files:
-        abort()
+        abort(status=400)
     file = request.files["file"]
     if allowed_file(file.filename):
         filename = f"{uuid.hex}.json"  # TODO: store in database

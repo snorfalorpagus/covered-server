@@ -9,4 +9,4 @@ pipeline:
       - pipenv install --dev --system
       - export PYTHONPATH=.
       - pytest tests -v --cov=app --cov=tests
-      - flake8 covered_server
+      - flake8 app

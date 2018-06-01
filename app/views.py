@@ -1,6 +1,5 @@
 import os
 from flask import Blueprint, request, abort, current_app, render_template, jsonify
-from werkzeug.utils import secure_filename
 from uuid import uuid4, UUID
 import json
 from .formatter import create_coverage_table
@@ -61,7 +60,10 @@ def view(uuid, filename):
 
     index = {source_file["name"]: n for n, source_file in enumerate(data["source_files"])}
 
-    idx = index[filename]
+    try:
+        idx = index[filename]
+    except KeyError:
+        abort(status=404)
 
     source_file = data["source_files"][idx]
     filename = source_file["name"]

@@ -36,4 +36,9 @@ def test_upload(client):
     # get coverge report for one of the files
     res = client.get(url + "hello.py")
     assert res.status_code == 200
-    
+    # get coverge report for empty file
+    res = client.get(url + "empty.py")
+    assert res.status_code == 200
+    # get coverge report for missing file
+    res = client.get(url + "notfound.py")
+    assert res.status_code == 404

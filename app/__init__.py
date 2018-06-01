@@ -4,6 +4,7 @@ import os
 from app.config import Configuration
 from app.views import blueprint as views_blueprint
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Configuration)

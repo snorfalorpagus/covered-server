@@ -9,7 +9,7 @@ blueprint = Blueprint("covered", __name__)
 
 def load(uuid):
     if not isinstance(uuid, UUID):  # TODO: not this
-        uuid = UUID(uuid)
+        uuid = UUID(uuid.replace("-", ""))
     path = os.path.join(current_app.config["UPLOAD_FOLDER"], f"{uuid.hex}.json")
     with open(path, "r") as f:
         data = json.load(f)
@@ -43,13 +43,13 @@ def upload():
 
 @blueprint.route("/view/<string:uuid>/")
 def index(uuid):
-    uuid = uuid.replace("-", "")
     data = load(uuid)
     content = render_template(
         "view_index.j2",
         source_files=data["source_files"],
         summary=data["summary"],
         git=data["git"],
+        uuid=uuid,
     )
     return content
 
@@ -72,7 +72,15 @@ def view(uuid, filename):
 
     coverage_table = create_coverage_table(filename, code, coverage)
 
-    return render_template("coverage.j2", path=filename, coverage_table=coverage_table, summary=source_file["summary"])
+    content = render_template(
+        "coverage.j2",
+        path=filename,
+        coverage_table=coverage_table,
+        summary=source_file["summary"],
+        uuid=uuid,
+    )
+
+    return content
 
 
 @blueprint.route("/healthcheck")

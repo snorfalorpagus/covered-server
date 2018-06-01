@@ -1,7 +1,11 @@
 {% extends "base.j2" %}
 
 {% block content %}
-<p>Coverage: {{ "%.0f"|format(summary["coverage"]) }} %</p>
+<p>Coverage report <a href="{{ url_for("covered.index", uuid=uuid) }}">{{ uuid }}</a></p>
+<p>
+Coverage: {{ "%.0f"|format(summary["coverage"]) }} %<br />
+{{ summary["hit"] }} run, {{ summary["missing"] }} missing, {{ summary["excluded"] }} excluded
+</p>
 
 {% if git["branch"] %}
 <p>
@@ -18,11 +22,12 @@ Commit: {{ git["commit"] }}
 <th>Total</th>
 <th>Hit</th>
 <th>Missed</th>
+<th>Excluded</th>
 <th>Coverage</th>
 </thead>
 <tbody>
 
-{% macro coverage_row(name, total, hit, miss, coverage, is_total=False) %}
+{% macro coverage_row(name, total, hit, miss, excluded, coverage, is_total=False) %}
 {% if is_total %}
 <tr class="coverage_row_total">
 <td>{{ name }}</td>
@@ -33,14 +38,15 @@ Commit: {{ git["commit"] }}
 <td>{{ total }}</td>
 <td>{{ hit }}</td>
 <td>{{ miss }}</td>
+<td>{{ excluded }}</td>
 <td>{{ "%.0f"|format(coverage) }} %</td>
 </tr>
 {%- endmacro %}
 
 {% for source_file in source_files %}
-{{ coverage_row(source_file["name"], source_file["summary"]["total"], source_file["summary"]["hit"], source_file["summary"]["missing"], source_file["summary"]["coverage"])}}
+{{ coverage_row(source_file["name"], source_file["summary"]["total"], source_file["summary"]["hit"], source_file["summary"]["missing"], source_file["summary"]["excluded"], source_file["summary"]["coverage"])}}
 {% endfor %}
-{{ coverage_row("Total", summary["total"], summary["hit"], summary["missing"], summary["coverage"], is_total=True)}}
+{{ coverage_row("Total", summary["total"], summary["hit"], summary["missing"], summary["excluded"], summary["coverage"], is_total=True)}}
 
 </tbody>
 </table>

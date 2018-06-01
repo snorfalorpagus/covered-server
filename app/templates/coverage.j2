@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block content %}
+<p>Coverage report <a href="{{ url_for("covered.index", uuid=uuid) }}">{{ uuid }}</a></p>
+
 <h1>{{ path }}</h1>
 
 <p>

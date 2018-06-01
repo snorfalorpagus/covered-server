@@ -12,7 +12,7 @@ h1 {
 .code {
     border-spacing: 0;
     border-collapse: separate;
-    min-width: 700px;
+    width: 100%;
 }
 .code pre {
     margin: 0;
@@ -29,4 +29,10 @@ h1 {
 }
 .coverage_row_total {
     font-weight: bold;
+}
+
+#content {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: sans-serif;
 }

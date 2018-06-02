@@ -46,7 +46,7 @@ class Formatter(HtmlFormatter):
 
 def create_coverage_table(filename, code, coverage):
     if not coverage:
-        return "Empty file"
+        return "<p>Empty file</p>"
     formatter = Formatter(coverage)
     highlighted = highlight(code, PythonLexer(), formatter)
     return highlighted

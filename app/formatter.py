@@ -23,7 +23,7 @@ class Formatter(HtmlFormatter):
             covcls = self.coverage_classes[cov]
             line = f"""
 <tr class="{covcls}">
-<td><pre><a id="L{line_number}" href="#L{line_number}">{line_number}</a></pre></td>
+<td class="line_number"><pre><a id="L{line_number}" href="#L{line_number}">{line_number}</a></pre></td>
 <td><pre>{line}</pre></td>
 </tr>\n"""
             yield is_line, line

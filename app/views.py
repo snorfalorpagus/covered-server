@@ -2,7 +2,10 @@ import os
 from flask import Blueprint, request, abort, current_app, render_template, jsonify
 from uuid import uuid4, UUID
 import json
+from sqlalchemy import and_
 from .formatter import create_coverage_table
+from .utils import store_upload
+from .models import Upload, SourceFile
 
 blueprint = Blueprint("covered", __name__)
 
@@ -35,7 +38,11 @@ def upload():
     file = request.files["file"]
     if allowed_file(file.filename):
         filename = f"{uuid.hex}.json"  # TODO: store in database
-        file.save(os.path.join(current_app.config["UPLOAD_FOLDER"], filename))
+        path = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
+        file.save(path)
+    with open(path, "r") as f:
+        data = json.load(f)
+    store_upload(uuid, data)
     # return url to view to the user
     url = f"{request.url_root}view/{uuid}/"
     return url, 200
@@ -43,41 +50,36 @@ def upload():
 
 @blueprint.route("/view/<string:uuid>/")
 def index(uuid):
-    data = load(uuid)
+    upload = Upload.query.get(uuid.replace("-", ""))
     content = render_template(
         "view_index.j2",
-        source_files=data["source_files"],
-        summary=data["summary"],
-        git=data["git"],
         uuid=uuid,
+        upload=upload,
+        source_files=upload.source_files,
     )
     return content
 
 
 @blueprint.route("/view/<string:uuid>/<path:filename>")
 def view(uuid, filename):
-    data = load(uuid)
+    source_file = SourceFile.query.filter(and_(SourceFile.name == filename, Upload.id == uuid.replace("-", ""))).first()
 
-    index = {source_file["name"]: n for n, source_file in enumerate(data["source_files"])}
-
-    try:
-        idx = index[filename]
-    except KeyError:
+    if not source_file:
         abort(status=404)
 
-    source_file = data["source_files"][idx]
-    filename = source_file["name"]
-    code = source_file["source"]
-    coverage = source_file["coverage"]
+    filename = source_file.name
+    code = source_file.source
+    lookup = {"1": 1, "0": 0, "x": None}
+    coverage = [lookup[x] for x in source_file.coverage]
 
     coverage_table = create_coverage_table(filename, code, coverage)
 
     content = render_template(
         "coverage.j2",
-        path=filename,
-        coverage_table=coverage_table,
-        summary=source_file["summary"],
         uuid=uuid,
+        path=filename,
+        source_file=source_file,
+        coverage_table=coverage_table,
     )
 
     return content

@@ -10,6 +10,8 @@ requests = "*"
 coverage = "*"
 pygments = "*"
 flask-env = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 pytest = "*"

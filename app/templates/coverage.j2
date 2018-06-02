@@ -11,8 +11,8 @@
 <h1>{{ path }}</h1>
 
 <p>
-Coverage: {{ "%.0f"|format(summary["coverage"]) }} %<br />
-{{ summary["hit"] }} run, {{ summary["missing"] }} missing, {{ summary["excluded"] }} excluded
+Coverage: {{ "%.0f"|format(source_file.coverage_percent) }} %<br />
+{{ source_file.hit }} run, {{ source_file.missing }} missing, {{ source_file.excluded }} excluded
 </p>
 
 {{ coverage_table }}

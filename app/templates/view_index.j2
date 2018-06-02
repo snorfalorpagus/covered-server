@@ -3,14 +3,14 @@
 {% block content %}
 <p>Coverage report <a href="{{ url_for("covered.index", uuid=uuid) }}">{{ uuid }}</a></p>
 <p>
-Coverage: {{ "%.0f"|format(summary["coverage"]) }} %<br />
-{{ summary["hit"] }} run, {{ summary["missing"] }} missing, {{ summary["excluded"] }} excluded
+Coverage: {{ "%.0f"|format(upload.coverage_percent) }} %<br />
+{{ upload.hit }} run, {{ upload.missing }} missing, {{ upload.excluded }} excluded
 </p>
 
-{% if git["branch"] %}
+{% if upload.git_branch %}
 <p>
-Branch: {{ git["branch"] }}<br />
-Commit: {{ git["commit"] }}
+Branch: {{ upload.git_branch }}<br />
+Commit: {{ upload.git_commit }}
 </p>
 {% endif %}
 
@@ -44,9 +44,9 @@ Commit: {{ git["commit"] }}
 {%- endmacro %}
 
 {% for source_file in source_files %}
-{{ coverage_row(source_file["name"], source_file["summary"]["total"], source_file["summary"]["hit"], source_file["summary"]["missing"], source_file["summary"]["excluded"], source_file["summary"]["coverage"])}}
+{{ coverage_row(source_file.name, source_file.total, source_file.hit, source_file.missing, source_file.excluded, source_file.coverage_percent)}}
 {% endfor %}
-{{ coverage_row("Total", summary["total"], summary["hit"], summary["missing"], summary["excluded"], summary["coverage"], is_total=True)}}
+{{ coverage_row("Total", upload.total, upload.hit, upload.missing, upload.excluded, upload.coverage_percent, is_total=True)}}
 
 </tbody>
 </table>

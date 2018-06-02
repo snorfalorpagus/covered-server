@@ -1,6 +1,8 @@
 pipeline:
   build:
     image: python:stretch
+    environment:
+      - SQLALCHEMY_DATABASE_URI=sqlite:///
     commands:
       - cp -R . ~
       - cd ~

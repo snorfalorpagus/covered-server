@@ -1,8 +1,16 @@
+services:
+  database:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpass
+      - POSTGRES_DB=pgdb
+
 pipeline:
   build:
     image: python:stretch
     environment:
-      - SQLALCHEMY_DATABASE_URI=sqlite:///
+      - SQLALCHEMY_DATABASE_URI=postgresql://pguser:pgpass@database/pgdb
     commands:
       - cp -R . ~
       - cd ~

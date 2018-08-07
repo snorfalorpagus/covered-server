@@ -12,6 +12,7 @@ pygments = "*"
 flask-env = "*"
 sqlalchemy = "*"
 flask-sqlalchemy = "*"
+"psycopg2-binary" = "*"
 
 [dev-packages]
 pytest = "*"

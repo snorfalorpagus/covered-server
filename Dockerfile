@@ -1,16 +1,14 @@
-FROM python:stretch
+FROM python:3.7-slim
 
 LABEL maintainer "Joshua Arnott <josh@snorfalorpagus.net>"
 
-RUN apt-get update && apt-get upgrade -y
-
+WORKDIR /app
 RUN pip install pipenv
-
+COPY Pipfile Pipfile.lock /app/
+RUN pipenv install --system --deploy
 COPY . /app
 
-WORKDIR /app
-
-RUN pipenv install --system --deploy
+USER www-data
 
 EXPOSE 8000
 

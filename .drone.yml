@@ -8,7 +8,7 @@ services:
 
 pipeline:
   build:
-    image: python:stretch
+    image: python:3.7-slim
     environment:
       - SQLALCHEMY_DATABASE_URI=postgresql://pguser:pgpass@database/pgdb
     commands:

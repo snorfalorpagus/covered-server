@@ -88,5 +88,6 @@ def view(uuid, filename):
 
 @blueprint.route("/healthcheck")
 def healthcheck():
-    # TODO: test database connection
+    count = Upload.query.count()
+    assert isinstance(count, int)
     return jsonify({"status": "OK"}), 200

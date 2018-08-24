@@ -62,7 +62,8 @@ def index(uuid):
 
 @blueprint.route("/view/<string:uuid>/<path:filename>")
 def view(uuid, filename):
-    source_file = SourceFile.query.filter(and_(SourceFile.name == filename, SourceFile.upload_id == uuid.replace("-", ""))).first()
+    source_file = SourceFile.query.filter(
+        and_(SourceFile.name == filename, SourceFile.upload_id == uuid.replace("-", ""))).first()
 
     if not source_file:
         abort(status=404)
